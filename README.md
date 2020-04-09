@@ -1,4 +1,4 @@
-# vue-next-webpack-preview
+# Vue 3 Samples
 
 > Minimal webpack setup for Vue 3 (alpha) 
 
