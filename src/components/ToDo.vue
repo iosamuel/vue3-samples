@@ -1,38 +1,40 @@
 <template>
-  <button @click="addToList()">Add new item</button>
-  <div class="buttons">
-    <label for="split-color">Split Color</label>
-    <input id="split-color" type="checkbox" v-model="splitColor">
+  <div class="nav">
+    <button @click="addToList()">Add new item</button>
+    <div class="buttons">
+      <label for="split-color">Split Color</label>
+      <input id="split-color" type="checkbox" v-model="splitColor">
+    </div>
+    <div class="buttons">
+      <label for="fetch-list">Fetch List</label>
+      <input id="fetch-list" type="checkbox" :disabled="shouldFetch" v-model="shouldFetch">
+    </div>
+    <div class="mouse-position">
+      X: {{ x }} | Y: {{ y }}
+    </div>
   </div>
-  <div class="buttons">
-    <label for="dup-list">Duplicate List</label>
-    <input id="dup-list" type="checkbox" v-model="dupList">
-  </div>
-  <ul v-for="(n, k) in (dupList ? 2 : 1)" :key="k">
-    <template v-for="(todos, key) in todosList">
-      <li v-for="todo in todos" :key="todo.id" :class="`list-${key}`">
-        <span>{{ todo.text }}</span>
-        <button @click="deleteFromList(todo.id)">X</button>
-      </li>
-    </template>
+  <ul v-for="(todos, key) in todosList" :key="key">
+    <li v-for="todo in todos" :key="todo.id" :class="`list-${key}`">
+      <span>{{ todo.title }}</span>
+      <button @click="deleteFromList(todo.id)">X</button>
+    </li>
   </ul>
 </template>
 
 <script>
-import useTodoList from "../use/useTodoList";
-import { computed, reactive, toRefs } from 'vue';
+import { useTodoList } from "../use/useTodoList";
+import { useMousePosition } from "../use/useMousePosition";
+import { computed, reactive, ref } from 'vue';
 
 export default {
   setup() {
-    const { todos, deleteFromList, addToList } = useTodoList();
+    const { todos, shouldFetch, deleteFromList, addToList } = useTodoList();
+    const { x, y } = useMousePosition();
 
-    const state = reactive({
-      splitColor: false,
-      dupList: false
-    });
+    const splitColor = ref(false);
 
     const todosList = computed(() => {
-      if (state.splitColor) {
+      if (splitColor.value) {
         const halfList = todos.value.length / 2;
         return [
           todos.value.slice(0, halfList),
@@ -40,13 +42,21 @@ export default {
         ]
       }
       return [todos.value];
-    })
+    });
 
     return {
+      // useTodoList
       todosList,
+      shouldFetch,
       deleteFromList,
       addToList,
-      ...toRefs(state)
+
+      // ToDo component
+      splitColor,
+
+      // useMousePosition
+      x,
+      y
     }
   }
 }
@@ -58,6 +68,14 @@ export default {
 }
 button {
   padding: 14px;
+}
+.nav {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 99;
+  display: flex;
+  align-items: center;
 }
 ul {
   margin: 0;
