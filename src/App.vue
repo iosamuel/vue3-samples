@@ -1,6 +1,6 @@
 <template>
   <Counter />
-  <!-- <ToDo /> -->
+  <ToDo />
 </template>
 
 <script>
@@ -10,7 +10,7 @@ import ToDo from "./components/ToDo.vue";
 export default {
   components: {
     Counter,
-    ToDo
-  }
-}
+    ToDo,
+  },
+};
 </script>

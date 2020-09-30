@@ -3,15 +3,18 @@
     <button @click="addToList()">Add new item</button>
     <div class="buttons">
       <label for="split-color">Split Color</label>
-      <input id="split-color" type="checkbox" v-model="splitColor">
+      <input id="split-color" type="checkbox" v-model="splitColor" />
     </div>
     <div class="buttons">
       <label for="fetch-list">Fetch List</label>
-      <input id="fetch-list" type="checkbox" :disabled="shouldFetch" v-model="shouldFetch">
+      <input
+        id="fetch-list"
+        type="checkbox"
+        :disabled="shouldFetch"
+        v-model="shouldFetch"
+      />
     </div>
-    <div class="mouse-position">
-      X: {{ x }} | Y: {{ y }}
-    </div>
+    <div class="mouse-position">X: {{ x }} | Y: {{ y }}</div>
   </div>
   <ul v-for="(todos, key) in todosList" :key="key">
     <li v-for="todo in todos" :key="todo.id" :class="`list-${key}`">
@@ -22,9 +25,9 @@
 </template>
 
 <script>
-import { useTodoList } from "../use/useTodoList";
-import { useMousePosition } from "../use/useMousePosition";
-import { computed, reactive, ref } from 'vue';
+import { useTodoList } from "../composable/useTodoList";
+import { useMousePosition } from "../composable/useMousePosition";
+import { computed, ref } from "vue";
 
 export default {
   setup() {
@@ -36,10 +39,7 @@ export default {
     const todosList = computed(() => {
       if (splitColor.value) {
         const halfList = todos.value.length / 2;
-        return [
-          todos.value.slice(0, halfList),
-          todos.value.slice(halfList)
-        ]
+        return [todos.value.slice(0, halfList), todos.value.slice(halfList)];
       }
       return [todos.value];
     });
@@ -56,10 +56,10 @@ export default {
 
       // useMousePosition
       x,
-      y
-    }
-  }
-}
+      y,
+    };
+  },
+};
 </script>
 
 <style scoped>
