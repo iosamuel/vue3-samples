@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import { reactive, computed } from "vue";
 
 export default {
   setup() {
@@ -20,15 +20,15 @@ export default {
 
     return {
       state,
-      increment
-    }
-  }
-}
+      increment,
+    };
+  },
+};
 </script>
 
 <style scoped>
-  button {
-    font-size: 24px;
-    padding: 14px;
-  }
+button {
+  font-size: 24px;
+  padding: 14px;
+}
 </style>
